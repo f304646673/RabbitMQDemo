@@ -1,0 +1,16 @@
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'Controller'
+      paths-to-match: '/**'
+      packages-to-scan: com.rabbitmq.basic.controller
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
