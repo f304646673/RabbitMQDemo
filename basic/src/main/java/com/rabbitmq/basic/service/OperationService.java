@@ -3,6 +3,8 @@ package com.rabbitmq.basic.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.client.support.BasicAuthenticationInterceptor;
@@ -127,6 +129,28 @@ public class OperationService {
         for (int i = 0; i < count; i++) {
             int hash = Integer.hashCode(i);
             rabbitTemplate.convertAndSend(exchangeName, String.valueOf(hash), "Message " + i);
+        }
+        return true;
+    }
+
+    public boolean sendToXConsistentHashExchangeWithHeader(String exchangeName, Long count) {
+        for (int i = 0; i < count; i++) {
+            int hash = Integer.hashCode(i);
+            Message message = MessageBuilder.withBody(("Message " + i).getBytes())
+                .setHeader("hash", hash)
+                .build();
+            rabbitTemplate.convertAndSend(exchangeName, "",  message);
+        }
+        return true;
+    }
+
+    public boolean sendToXConsistentHashExchangeWithMessageId(String exchangeName, Long count) {
+        for (int i = 0; i < count; i++) {
+            int hash = Integer.hashCode(i);
+            Message message = MessageBuilder.withBody(("Message " + i).getBytes())
+                .setMessageId(String.valueOf(hash))
+                .build();
+            rabbitTemplate.convertAndSend(exchangeName, "",  message);
         }
         return true;
     }

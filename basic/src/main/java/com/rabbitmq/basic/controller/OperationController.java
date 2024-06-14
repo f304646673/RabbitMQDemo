@@ -32,4 +32,20 @@ public class OperationController {
     {
         operationService.sendToXConsistentHashExchange(exchangeName, count);
     }
+
+    @GetMapping("send/message-with-header")
+    public void sendToXConsistentHashExchangeWithHeader(
+        @RequestParam String exchangeName,
+        @RequestParam Long count)
+    {
+        operationService.sendToXConsistentHashExchangeWithHeader(exchangeName, count);
+    }
+
+    @GetMapping("send/message-with-message-id")
+    public void sendToXConsistentHashExchangeWithMessageId(
+        @RequestParam String exchangeName,
+        @RequestParam Long count)
+    {
+        operationService.sendToXConsistentHashExchangeWithMessageId(exchangeName, count);
+    }
 }
