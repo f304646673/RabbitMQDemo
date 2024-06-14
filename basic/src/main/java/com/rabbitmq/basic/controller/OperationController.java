@@ -48,4 +48,12 @@ public class OperationController {
     {
         operationService.sendToXConsistentHashExchangeWithMessageId(exchangeName, count);
     }
+
+    @GetMapping("send/message-to-random-exchange")
+    public void sendToRandomExchange(
+        @RequestParam String exchangeName,
+        @RequestParam Long count)
+    {
+        operationService.sendToXCRandomExchange(exchangeName, count);
+    }
 }

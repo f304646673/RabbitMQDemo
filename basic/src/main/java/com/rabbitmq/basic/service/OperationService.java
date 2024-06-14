@@ -154,5 +154,12 @@ public class OperationService {
         }
         return true;
     }
+
+    public boolean sendToXCRandomExchange(String exchangeName, Long count) {
+        for (int i = 0; i < count; i++) {
+            rabbitTemplate.convertAndSend(exchangeName, "", "Message " + i);
+        }
+        return true;
+    }
     
 }
