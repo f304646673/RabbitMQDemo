@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +26,7 @@ public class OperationController {
         return operationService.getAllQueues();
     }
 
-    @GetMapping("send/message")
+    @PostMapping("send/message")
     public void sendToXConsistentHashExchange(
         @RequestParam String exchangeName,
         @RequestParam Long count)
@@ -33,7 +34,7 @@ public class OperationController {
         operationService.sendToXConsistentHashExchange(exchangeName, count);
     }
 
-    @GetMapping("send/message-with-header")
+    @PostMapping("send/message-with-header")
     public void sendToXConsistentHashExchangeWithHeader(
         @RequestParam String exchangeName,
         @RequestParam Long count)
@@ -41,7 +42,7 @@ public class OperationController {
         operationService.sendToXConsistentHashExchangeWithHeader(exchangeName, count);
     }
 
-    @GetMapping("send/message-with-message-id")
+    @PostMapping("send/message-with-message-id")
     public void sendToXConsistentHashExchangeWithMessageId(
         @RequestParam String exchangeName,
         @RequestParam Long count)
@@ -49,7 +50,7 @@ public class OperationController {
         operationService.sendToXConsistentHashExchangeWithMessageId(exchangeName, count);
     }
 
-    @GetMapping("send/message-to-random-exchange")
+    @PostMapping("send/message-to-random-exchange")
     public void sendToRandomExchange(
         @RequestParam String exchangeName,
         @RequestParam Long count)
