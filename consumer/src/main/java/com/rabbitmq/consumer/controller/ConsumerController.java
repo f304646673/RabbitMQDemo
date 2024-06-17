@@ -20,7 +20,6 @@ public class ConsumerController {
 
    
     @GetMapping(value = "/listen", produces = "text/event-stream")
-    @ResponseBody
     public Flux<String> listen(@RequestParam String queueName) {
         // Return the current time every second
         // return Flux.interval(java.time.Duration.ofSeconds(1))

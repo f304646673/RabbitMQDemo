@@ -7,3 +7,6 @@ Comsumer/mvnw.cmd
 /consumer/.mvn
 consumer/mvnw
 consumer/mvnw.cmd
+chat/mvnw
+/chat/.mvn
+chat/mvnw.cmd
