@@ -26,7 +26,7 @@ public class ChatRoom {
         private Map<String, String> usernameToQueuename;
     }
 
-    private Map<String, ChatRoomInfo> chatRooms = new java.util.HashMap<>();
+    private final Map<String, ChatRoomInfo> chatRooms = new java.util.HashMap<>();
     private final ReentrantLock lock = new ReentrantLock();   
     
     @PostConstruct

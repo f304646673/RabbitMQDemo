@@ -1,6 +1,5 @@
 package com.rabbitmq.chat.service;
 
-import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -51,17 +50,7 @@ public class Core {
     public void accept(String fromUsername, String toUsername) {
         rabbitTemplate.convertAndSend(exchangeName, fromUsername, toUsername + " accepts your invitation");
     }
-
-    public Map.Entry<String, String> createChatRoom(String fromUsername, String toUsername) {
-        String chatRoomName = fromUsername + "-" + toUsername;
-        createExchange(chatRoomName);
-        String queueName = "queue-" + fromUsername + "-" + toUsername;
-        createExclusiveQueue(queueName);
-        String routingKey = "to." + queueName;
-        createBanding(chatRoomName, queueName, routingKey);
-        return new SimpleEntry<>(chatRoomName, routingKey);
-    }
-
+    
     public void sendNotify(String username, String msg) {
         rabbitTemplate.convertAndSend(exchangeName, username, msg);
     }
