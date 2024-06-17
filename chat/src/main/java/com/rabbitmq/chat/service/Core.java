@@ -10,14 +10,12 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.PostConstruct;
 import reactor.core.publisher.Flux;
 
 @Service
-@AutoConfigureBefore({Chat.class, UserService.class})
 public class Core {
     @Autowired
     private RabbitTemplate rabbitTemplate;

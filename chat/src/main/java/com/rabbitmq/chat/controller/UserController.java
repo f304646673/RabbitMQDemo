@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rabbitmq.chat.service.UserService;
+import com.rabbitmq.chat.service.Core;
 
 import reactor.core.publisher.Flux;
 
@@ -14,11 +14,11 @@ import reactor.core.publisher.Flux;
 @RequestMapping("/user")
 public class UserController {
     @Autowired
-    private UserService userService;
+    private Core core;
 
     @PostMapping(value = "/login", produces = "text/event-stream")
     public Flux<String> login(@RequestParam String username) {
-        return userService.Login(username);
+        return core.Login(username);
     }
     
 }
