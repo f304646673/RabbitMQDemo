@@ -27,5 +27,18 @@ public class NonmandatoryService {
         CorrelationData correlationData = new CorrelationData(msgId);
         rabbitTemplateWithoutMandatory.convertAndSend(exchangeName, routingKey, msg, correlationData);
     }
+
     
+    public void sendWithTTL(String exchangeName, String routingKey, String message, int ttl) {
+        String msgId = UUID.randomUUID().toString();
+        Message msg = MessageBuilder.withBody(message.getBytes())
+                .setContentType("text/plain")
+                .setCorrelationId(msgId)
+                .setMessageId(msgId)
+                .setExpiration(String.valueOf(ttl))
+                .build();
+
+        CorrelationData correlationData = new CorrelationData(msgId);
+        rabbitTemplateWithoutMandatory.convertAndSend(exchangeName, routingKey, msg, correlationData);
+    }
 }

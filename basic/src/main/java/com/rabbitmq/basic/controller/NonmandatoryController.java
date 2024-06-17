@@ -30,4 +30,16 @@ public class NonmandatoryController {
     public void send(@RequestParam String exchangeName, @RequestParam String routingKey, @RequestParam String message) {
         nonmandatoryService.send(exchangeName, routingKey, message);
     }
+
+    @Operation(summary = "Send a message with TTL", description = "Send a message with TTL to NonmandatoryService")
+    @Parameters({
+        @Parameter(name = "exchangeName", description = "The exchange name", required = true),
+        @Parameter(name = "routingKey", description = "The routing key", required = true),
+        @Parameter(name = "message", description = "The message", required = true),
+        @Parameter(name = "ttl", description = "The TTL", required = true)
+    })
+    @PostMapping("/sendWithTTL")
+    public void sendWithTTL(@RequestParam String exchangeName, @RequestParam String routingKey, @RequestParam String message, @RequestParam int ttl) {
+        nonmandatoryService.sendWithTTL(exchangeName, routingKey, message, ttl);
+    }
 }
