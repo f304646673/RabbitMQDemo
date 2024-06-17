@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rabbitmq.consumer.service.ConsumerService;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import reactor.core.publisher.Flux;
 
 @RestController
@@ -21,10 +18,7 @@ public class ConsumerController {
     @Autowired
     private ConsumerService comsumerService;
 
-    @Operation(summary = "Listen to a queue", description = "Listen to a queue")
-    @Parameters({
-        @Parameter(name = "queueName", description = "The queue name", required = true)
-    })
+   
     @GetMapping(value = "/listen", produces = "text/event-stream")
     @ResponseBody
     public Flux<String> listen(@RequestParam String queueName) {
