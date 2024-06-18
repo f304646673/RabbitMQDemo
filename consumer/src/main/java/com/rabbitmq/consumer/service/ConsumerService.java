@@ -22,7 +22,7 @@ public class ConsumerService {
     private ConnectionFactory connectionFactory;
 
     private final ReentrantLock lock = new ReentrantLock();
-    private Map<String, SimpleMessageListenerContainer> listeners = new java.util.HashMap<>();
+    private final Map<String, SimpleMessageListenerContainer> listeners = new java.util.HashMap<>();
 
     @PostConstruct
     public void init() {
@@ -31,13 +31,10 @@ public class ConsumerService {
 
     public Flux<String> listen(String queueName) {
        return Flux.create(emitter -> {
-           SimpleMessageListenerContainer container = getListener(queueName, new MessageListener() {
-               @Override
-               public void onMessage(Message message) {
-                   String msg = new String(message.getBody());
-                   System.out.println("listen function Received message: " + msg);
-                   emitter.next(msg);
-               }
+           SimpleMessageListenerContainer container = getListener(queueName, (Message message) -> {
+               String msg = new String(message.getBody());
+               System.out.println("listen function Received message: " + msg);
+               emitter.next(msg);
            });
            container.start();
        });
