@@ -2,6 +2,8 @@ package com.rabbitmq.chat.service;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageBuilder;
@@ -134,6 +136,30 @@ public class ChatRoomV2 {
                 );
                 return null;
             });
+        });
+    }
+
+    public void createChatRoomWithMaxSize(String roomName, int maxSize) {
+        rabbitTemplate.execute(action -> {
+            action.exchangeDeclare(roomName, "fanout", false, true, null);
+            Map<String, Object> args = new HashMap<>();
+            args.put("x-max-length-bytes", maxSize);
+            args.put("x-queue-type", "stream");
+            action.queueDeclare(roomName, true, false, false, args);
+            action.queueBind(roomName, roomName, "");
+            return null;
+        });
+    }
+
+    public void createChatRoomWithTTL(String roomName, String ttl) {
+        rabbitTemplate.execute(action -> {
+            action.exchangeDeclare(roomName, "fanout", false, true, null);
+            Map<String, Object> args = new HashMap<>();
+            args.put("x-max-age", ttl);
+            args.put("x-queue-type", "stream");
+            action.queueDeclare(roomName, true, false, false, args);
+            action.queueBind(roomName, roomName, "");
+            return null;
         });
     }
 
