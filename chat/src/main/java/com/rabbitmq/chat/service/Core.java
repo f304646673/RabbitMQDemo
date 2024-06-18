@@ -55,6 +55,13 @@ public class Core {
         rabbitTemplate.convertAndSend(exchangeName, username, msg);
     }
 
+    public void notifyEveryone(String message) {
+        String notifyMessage = "Notification: " + message;
+        for (String username : listeners.keySet()) {
+            rabbitTemplate.convertAndSend(exchangeName, username, notifyMessage);
+        }
+    }
+
     private SimpleMessageListenerContainer getListener(String queueName, MessageListener messageListener) {
         lock.lock();
         try {
