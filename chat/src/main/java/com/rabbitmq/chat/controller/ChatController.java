@@ -1,5 +1,7 @@
 package com.rabbitmq.chat.controller;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,5 +60,25 @@ public class ChatController {
     public Flux<String> receive(@RequestParam String username, @RequestParam String roomName) {
         return chatRoomV2.receive(username, roomName);
     }
-    
+
+    @GetMapping(value = "/get_message_from_first", produces = "text/event-stream")
+    public Flux<String> getMessageFromFirst(@RequestParam String username, @RequestParam String roomName) {
+        return chatRoomV2.getMessageFromFirst(username, roomName);
+    }
+
+    @GetMapping(value = "/get_message_from_last", produces = "text/event-stream")
+    public Flux<String> getMessageFromLast(@RequestParam String username, @RequestParam String roomName) {
+        return chatRoomV2.getMessageFromLast(username, roomName);
+    }
+
+    @GetMapping(value = "/get_message_from_timestamp", produces = "text/event-stream")
+    public Flux<String> getMessageFromTimestamp(@RequestParam String username, @RequestParam String roomName, @RequestParam Date time) {
+        return chatRoomV2.getMessageFromTimestamp(username, roomName, time);
+    }
+
+    @GetMapping(value = "/get_message_from_offset", produces = "text/event-stream")
+    public Flux<String> getMessageFromOffset(@RequestParam String username, @RequestParam String roomName, @RequestParam long offset) {
+        return chatRoomV2.getMessageFromOffset(username, roomName, offset);
+    }
+
 }

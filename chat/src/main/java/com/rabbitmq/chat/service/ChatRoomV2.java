@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageBuilder;
+import org.springframework.amqp.rabbit.core.ChannelCallback;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +59,78 @@ public class ChatRoomV2 {
                             channel.basicAck(message.getEnvelope().getDeliveryTag(), false);
                         },
                         consumerTag -> { }
+                );
+                return null;
+            });
+        });
+    }
+
+    public Flux<String> getMessageFromFirst(String username, String roomName) {
+        return Flux.create(emitter -> {
+            rabbitTemplate.execute((ChannelCallback<Void>) channel -> {
+                channel.basicQos(100);
+                channel.basicConsume(roomName, false, username,
+                false, true,
+                    Collections.singletonMap("x-stream-offset", "first"),
+                    (consumerTag, message) -> {
+                        emitter.next(new String(message.getBody()));
+                        channel.basicAck(message.getEnvelope().getDeliveryTag(), false);
+                    },
+                    consumerTag -> { }
+                );
+                return null;
+            });
+        });
+    }
+
+    public Flux<String> getMessageFromLast(String username, String roomName) {
+        return Flux.create(emitter -> {
+            rabbitTemplate.execute((ChannelCallback<Void>) channel -> {
+                channel.basicQos(100);
+                channel.basicConsume(roomName, false, username,
+                false, true,
+                    Collections.singletonMap("x-stream-offset", "last"),
+                    (consumerTag, message) -> {
+                        emitter.next(new String(message.getBody()));
+                        channel.basicAck(message.getEnvelope().getDeliveryTag(), false);
+                    },
+                    consumerTag -> { }
+                );
+                return null;
+            });
+        });
+    }
+
+    public Flux<String> getMessageFromTimestamp(String username, String roomName, Date timestamp) {
+        return Flux.create(emitter -> {
+            rabbitTemplate.execute((ChannelCallback<Void>) channel -> {
+                channel.basicQos(100);
+                channel.basicConsume(roomName, false, username,
+                false, true,
+                    Collections.singletonMap("x-stream-offset", timestamp),
+                    (consumerTag, message) -> {
+                        emitter.next(new String(message.getBody()));
+                        channel.basicAck(message.getEnvelope().getDeliveryTag(), false);
+                    },
+                    consumerTag -> { }
+                );
+                return null;
+            });
+        });
+    }
+
+    public Flux<String> getMessageFromOffset(String username, String roomName, long offset) {
+        return Flux.create(emitter -> {
+            rabbitTemplate.execute((ChannelCallback<Void>) channel -> {
+                channel.basicQos(100);
+                channel.basicConsume(roomName, false, username,
+                false, true,
+                    Collections.singletonMap("x-stream-offset", offset),
+                    (consumerTag, message) -> {
+                        emitter.next(new String(message.getBody()));
+                        channel.basicAck(message.getEnvelope().getDeliveryTag(), false);
+                    },
+                    consumerTag -> { }
                 );
                 return null;
             });
